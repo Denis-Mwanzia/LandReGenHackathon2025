@@ -7,7 +7,10 @@ type PlantingRecordFormProps = {
   onSuccess?: () => void;
 };
 
-export default function PlantingRecordForm({ projectId, onSuccess }: PlantingRecordFormProps) {
+export default function PlantingRecordForm({
+  projectId,
+  onSuccess,
+}: PlantingRecordFormProps) {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [projects, setProjects] = useState<ReforestationProject[]>([]);
@@ -32,7 +35,10 @@ export default function PlantingRecordForm({ projectId, onSuccess }: PlantingRec
   const loadOptions = async () => {
     try {
       const [projectsResult, speciesResult] = await Promise.all([
-        supabase.from('reforestation_projects').select('*').order('project_name'),
+        supabase
+          .from('reforestation_projects')
+          .select('*')
+          .order('project_name'),
         supabase.from('tree_species').select('*').order('name'),
       ]);
 
@@ -83,6 +89,15 @@ export default function PlantingRecordForm({ projectId, onSuccess }: PlantingRec
     }
   };
 
+  const uploadPhoto = async (file: File) => {
+    const { data, error } = await supabase.storage
+      .from('planting-photos')
+      .upload(`${Date.now()}-${file.name}`, file);
+
+    if (error) throw error;
+    return data.path;
+  };
+
   if (!showForm) {
     return (
       <button
@@ -102,7 +117,9 @@ export default function PlantingRecordForm({ projectId, onSuccess }: PlantingRec
           <div className="p-2 bg-green-100 rounded-lg">
             <Sprout className="text-green-600" size={24} />
           </div>
-          <h3 className="text-xl font-bold text-slate-800">Record Planting Activity</h3>
+          <h3 className="text-xl font-bold text-slate-800">
+            Record Planting Activity
+          </h3>
         </div>
         <button
           onClick={() => setShowForm(false)}
@@ -121,7 +138,9 @@ export default function PlantingRecordForm({ projectId, onSuccess }: PlantingRec
             <select
               required
               value={formData.project_id}
-              onChange={(e) => setFormData({ ...formData, project_id: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, project_id: e.target.value })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             >
               <option value="">Select a project</option>
@@ -140,7 +159,9 @@ export default function PlantingRecordForm({ projectId, onSuccess }: PlantingRec
             <select
               required
               value={formData.species_id}
-              onChange={(e) => setFormData({ ...formData, species_id: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, species_id: e.target.value })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             >
               <option value="">Select a species</option>
@@ -161,7 +182,9 @@ export default function PlantingRecordForm({ projectId, onSuccess }: PlantingRec
               required
               min="1"
               value={formData.quantity}
-              onChange={(e) => setFormData({ ...formData, quantity: parseInt(e.target.value) })}
+              onChange={(e) =>
+                setFormData({ ...formData, quantity: parseInt(e.target.value) })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
               placeholder="e.g., 500"
             />
@@ -175,7 +198,9 @@ export default function PlantingRecordForm({ projectId, onSuccess }: PlantingRec
               type="date"
               required
               value={formData.planting_date}
-              onChange={(e) => setFormData({ ...formData, planting_date: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, planting_date: e.target.value })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
@@ -189,7 +214,12 @@ export default function PlantingRecordForm({ projectId, onSuccess }: PlantingRec
               step="0.0001"
               required
               value={formData.latitude}
-              onChange={(e) => setFormData({ ...formData, latitude: parseFloat(e.target.value) })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  latitude: parseFloat(e.target.value),
+                })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
@@ -203,7 +233,12 @@ export default function PlantingRecordForm({ projectId, onSuccess }: PlantingRec
               step="0.0001"
               required
               value={formData.longitude}
-              onChange={(e) => setFormData({ ...formData, longitude: parseFloat(e.target.value) })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  longitude: parseFloat(e.target.value),
+                })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
@@ -216,10 +251,14 @@ export default function PlantingRecordForm({ projectId, onSuccess }: PlantingRec
               type="number"
               min="0"
               value={formData.survival_count || ''}
-              onChange={(e) => setFormData({
-                ...formData,
-                survival_count: e.target.value ? parseInt(e.target.value) : null
-              })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  survival_count: e.target.value
+                    ? parseInt(e.target.value)
+                    : null,
+                })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
               placeholder="Trees surviving"
             />
@@ -232,7 +271,9 @@ export default function PlantingRecordForm({ projectId, onSuccess }: PlantingRec
             <input
               type="date"
               value={formData.last_monitored}
-              onChange={(e) => setFormData({ ...formData, last_monitored: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, last_monitored: e.target.value })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
@@ -244,7 +285,9 @@ export default function PlantingRecordForm({ projectId, onSuccess }: PlantingRec
           </label>
           <textarea
             value={formData.notes}
-            onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, notes: e.target.value })
+            }
             rows={3}
             className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             placeholder="Add any additional observations or notes..."
