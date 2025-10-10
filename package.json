@@ -12,14 +12,19 @@
     "seed": "tsx scripts/seed-database.ts"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.11.5",
     "@supabase/supabase-js": "^2.57.4",
     "@types/leaflet": "^1.9.20",
+    "dotenv": "^17.2.3",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.344.0",
+    "openai": "^4.104.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.6.0",
     "react-is": "^19.2.0",
     "react-leaflet": "^4.2.1",
+    "react-leaflet-cluster": "^2.1.0",
     "recharts": "^3.2.1"
   },
   "devDependencies": {
@@ -38,6 +43,6 @@
     "tsx": "^4.7.0",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.3.0",
-    "vite": "^5.4.2"
+    "vite": "^7.1.9"
   }
 }
