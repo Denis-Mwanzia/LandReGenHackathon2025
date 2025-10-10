@@ -1,18 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { supabase } from './lib/supabase';
 import LandingPage from './components/LandingPage';
 import MapView from './components/MapView';
 import Dashboard from './components/Dashboard';
 import AIRecommendations from './components/AIRecommendations';
 import ProjectForm from './components/ProjectForm';
 import PlantingRecordForm from './components/PlantingRecordForm';
-import { TreePine, BarChart3, Sparkles, MapIcon, Leaf, Home } from 'lucide-react';
+import {
+  TreePine,
+  BarChart3,
+  Sparkles,
+  MapIcon,
+  Leaf,
+  Home,
+} from 'lucide-react';
 
 type TabType = 'home' | 'map' | 'dashboard' | 'ai' | 'projects' | 'planting';
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('home');
-  const [selectedLocation, setSelectedLocation] = useState<{ lat: number; lng: number } | undefined>();
+  const [selectedLocation, setSelectedLocation] = useState<
+    { lat: number; lng: number } | undefined
+  >();
   const [refreshKey, setRefreshKey] = useState(0);
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleLocationSelect = (lat: number, lng: number) => {
     setSelectedLocation({ lat, lng });
@@ -20,7 +45,7 @@ function App() {
   };
 
   const handleFormSuccess = () => {
-    setRefreshKey(prev => prev + 1);
+    setRefreshKey((prev) => prev + 1);
     setActiveTab('map');
   };
 
@@ -77,13 +102,22 @@ function App() {
         </div>
       </nav>
 
-      <main className={activeTab === 'home' ? '' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'}>
+      <main
+        className={
+          activeTab === 'home'
+            ? ''
+            : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'
+        }
+      >
         {activeTab === 'home' && (
           <LandingPage onGetStarted={() => setActiveTab('map')} />
         )}
 
         {activeTab === 'map' && (
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden" style={{ height: '600px' }}>
+          <div
+            className="bg-white rounded-xl shadow-lg overflow-hidden"
+            style={{ height: '600px' }}
+          >
             <MapView
               key={refreshKey}
               onLocationSelect={handleLocationSelect}
@@ -117,10 +151,13 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <h3 className="text-lg font-bold mb-3">About Kitui Reforest AI</h3>
+              <h3 className="text-lg font-bold mb-3">
+                About Kitui Reforest AI
+              </h3>
               <p className="text-slate-300 text-sm">
-                Using satellite data, AI, and community engagement to restore degraded lands
-                in Kitui County, Kenya. Building a sustainable, greener future together.
+                Using satellite data, AI, and community engagement to restore
+                degraded lands in Kitui County, Kenya. Building a sustainable,
+                greener future together.
               </p>
             </div>
             <div>
@@ -135,13 +172,17 @@ function App() {
             <div>
               <h3 className="text-lg font-bold mb-3">Impact</h3>
               <p className="text-slate-300 text-sm">
-                Empowering local communities and NGOs to make data-driven reforestation
-                decisions that restore ecosystems and improve livelihoods.
+                Empowering local communities and NGOs to make data-driven
+                reforestation decisions that restore ecosystems and improve
+                livelihoods.
               </p>
             </div>
           </div>
           <div className="border-t border-slate-700 mt-8 pt-6 text-center text-slate-400 text-sm">
-            <p>Kitui Reforest AI &copy; 2025 - Restoring land, rebuilding communities</p>
+            <p>
+              Kitui Reforest AI &copy; 2025 - Restoring land, rebuilding
+              communities
+            </p>
           </div>
         </div>
       </footer>
