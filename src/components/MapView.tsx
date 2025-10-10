@@ -1,9 +1,18 @@
 import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Circle, useMapEvents } from 'react-leaflet';
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Circle,
+  useMapEvents,
+  WMSLayer,
+} from 'react-leaflet';
 import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { supabase, DegradedZone, ReforestationProject } from '../lib/supabase';
 import { TreePine, MapPin, AlertTriangle } from 'lucide-react';
+import MarkerClusterGroup from 'react-leaflet-cluster';
 
 // Fix for default marker icons in React-Leaflet
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -22,7 +31,11 @@ type MapViewProps = {
   allowPinDrop?: boolean;
 };
 
-function LocationMarker({ onLocationSelect }: { onLocationSelect?: (lat: number, lng: number) => void }) {
+function LocationMarker({
+  onLocationSelect,
+}: {
+  onLocationSelect?: (lat: number, lng: number) => void;
+}) {
   const [position, setPosition] = useState<[number, number] | null>(null);
 
   useMapEvents({
@@ -41,7 +54,10 @@ function LocationMarker({ onLocationSelect }: { onLocationSelect?: (lat: number,
   );
 }
 
-export default function MapView({ onLocationSelect, allowPinDrop = false }: MapViewProps) {
+export default function MapView({
+  onLocationSelect,
+  allowPinDrop = false,
+}: MapViewProps) {
   const [degradedZones, setDegradedZones] = useState<DegradedZone[]>([]);
   const [projects, setProjects] = useState<ReforestationProject[]>([]);
   const [loading, setLoading] = useState(true);
@@ -116,6 +132,18 @@ export default function MapView({ onLocationSelect, allowPinDrop = false }: MapV
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         />
 
+        <WMSLayer
+          url="https://services.sentinel-hub.com/ogc/wms/{instance-id}"
+          params={{
+            layers: 'NDVI',
+            format: 'image/png',
+            transparent: true,
+            time: '2024-01-01/2024-12-31',
+            apikey: 'YOUR_SENTINEL_HUB_API_KEY',
+          }}
+          opacity={0.6}
+        />
+
         {degradedZones.map((zone) => (
           <Circle
             key={zone.id}
@@ -134,52 +162,82 @@ export default function MapView({ onLocationSelect, allowPinDrop = false }: MapV
                   <h3 className="font-bold text-sm">{zone.zone_name}</h3>
                 </div>
                 <div className="text-xs space-y-1">
-                  <p><strong>Degradation:</strong> {zone.degradation_level}</p>
-                  <p><strong>Area:</strong> {zone.area_hectares} hectares</p>
-                  <p><strong>NDVI Score:</strong> {zone.ndvi_score}</p>
-                  <p><strong>Soil:</strong> {zone.soil_type}</p>
-                  <p><strong>Rainfall:</strong> {zone.avg_rainfall}mm/year</p>
+                  <p>
+                    <strong>Degradation:</strong> {zone.degradation_level}
+                  </p>
+                  <p>
+                    <strong>Area:</strong> {zone.area_hectares} hectares
+                  </p>
+                  <p>
+                    <strong>NDVI Score:</strong> {zone.ndvi_score}
+                  </p>
+                  <p>
+                    <strong>Soil:</strong> {zone.soil_type}
+                  </p>
+                  <p>
+                    <strong>Rainfall:</strong> {zone.avg_rainfall}mm/year
+                  </p>
                 </div>
               </div>
             </Popup>
           </Circle>
         ))}
 
-        {projects.map((project) => (
-          <Marker
-            key={project.id}
-            position={[project.latitude, project.longitude]}
-            icon={
-              new Icon({
-                iconUrl: `data:image/svg+xml;base64,${btoa(`
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="${getStatusColor(project.status)}" stroke="white" stroke-width="2">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                    <circle cx="12" cy="10" r="3" fill="white"></circle>
-                  </svg>
-                `)}`,
-                iconSize: [32, 32],
-                iconAnchor: [16, 32],
-                popupAnchor: [0, -32],
-              })
-            }
-          >
-            <Popup>
-              <div className="p-2">
-                <div className="flex items-center gap-2 mb-2">
-                  <TreePine size={16} className="text-green-600" />
-                  <h3 className="font-bold text-sm">{project.project_name}</h3>
-                </div>
-                <div className="text-xs space-y-1">
-                  <p><strong>Organization:</strong> {project.organization}</p>
-                  <p><strong>Status:</strong> <span className="capitalize">{project.status}</span></p>
-                  <p><strong>Target Trees:</strong> {project.target_trees.toLocaleString()}</p>
-                  <p><strong>Area:</strong> {project.area_hectares} hectares</p>
-                  {project.description && <p className="mt-2 italic">{project.description}</p>}
-                </div>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
+        {projects.length > 0 && (
+          <MarkerClusterGroup>
+            {projects.map((project) => (
+              <Marker
+                key={project.id}
+                position={[project.latitude, project.longitude]}
+                icon={
+                  new Icon({
+                    iconUrl: `data:image/svg+xml;base64,${btoa(`
+                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="${getStatusColor(
+                        project.status
+                      )}" stroke="white" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3" fill="white"></circle>
+                      </svg>
+                    `)}`,
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [0, -32],
+                  })
+                }
+              >
+                <Popup>
+                  <div className="p-2">
+                    <div className="flex items-center gap-2 mb-2">
+                      <TreePine size={16} className="text-green-600" />
+                      <h3 className="font-bold text-sm">
+                        {project.project_name}
+                      </h3>
+                    </div>
+                    <div className="text-xs space-y-1">
+                      <p>
+                        <strong>Organization:</strong> {project.organization}
+                      </p>
+                      <p>
+                        <strong>Status:</strong>{' '}
+                        <span className="capitalize">{project.status}</span>
+                      </p>
+                      <p>
+                        <strong>Target Trees:</strong>{' '}
+                        {project.target_trees.toLocaleString()}
+                      </p>
+                      <p>
+                        <strong>Area:</strong> {project.area_hectares} hectares
+                      </p>
+                      {project.description && (
+                        <p className="mt-2 italic">{project.description}</p>
+                      )}
+                    </div>
+                  </div>
+                </Popup>
+              </Marker>
+            ))}
+          </MarkerClusterGroup>
+        )}
 
         {allowPinDrop && <LocationMarker onLocationSelect={onLocationSelect} />}
       </MapContainer>
