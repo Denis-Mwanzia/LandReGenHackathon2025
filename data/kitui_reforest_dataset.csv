@@ -1,0 +1,11 @@
+Location,Latitude,Longitude,Soil_Type,Degradation_Score,Rainfall_mm,Recommended_Species,Planting_Method,Survival_Notes
+Muumoni Forest,-1.031,38.155,Sandy Loam,0.85,450,"Melia volkensii, Acacia tortilis",Zai pits with manure and mulching,High survival (80%) when planted before short rains
+Mutitu Forest,-1.198,38.312,Loamy,0.72,520,"Terminalia brownii, Croton megalocarpus",Contour terracing and composting,Moderate survival (70%) with soil moisture management
+Zombe Hills,-1.356,38.268,Clay Loam,0.68,600,"Albizia gummifera, Faidherbia albida",Bench terracing and agroforestry,Good survival (75%) under mixed cropping
+Kyuso,-0.963,38.276,Sandy,0.9,420,"Acacia tortilis, Melia volkensii",Zai pits and dry mulching,High survival (78%) in low rainfall with proper pit depth
+Tseikuru,-0.945,38.36,Sandy Clay,0.83,460,"Terminalia brownii, Tamarindus indica",Zai pits + manure application,High survival (80%) under early planting
+Mutonguni,-1.248,38.108,Loamy,0.66,550,"Grevillea robusta, Croton megalocarpus",Contour ridging and compost use,Survival 70% in farms with soil conservation
+Nzambani,-1.348,38.052,Clay,0.55,600,"Cordia africana, Ficus sycomorus",Mulching + rainwater harvesting,Excellent survival (85%) if planted at onset of rains
+Mwingi Central,-1.141,38.068,Sandy Loam,0.78,500,"Melia volkensii, Acacia senegal",Zai pits + organic fertilizer,Survival (75%) with proper spacing
+Ikutha,-1.482,38.26,Clay Loam,0.64,580,"Croton megalocarpus, Albizia anthelmintica",Contour farming and compost manure,Good survival (77%) in slightly higher rainfall areas
+Nguni,-1.051,38.39,Sandy,0.88,440,"Acacia tortilis, Terminalia brownii",Half-moon pits with mulch,High survival (82%) if mulched and protected from grazing
