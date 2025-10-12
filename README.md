@@ -1,29 +1,38 @@
-# Kitui Reforest AI - Land ReGen Hackathon 2025
+# 🌳 Kitui Reforest AI - Land ReGen Hackathon 2025
 
 **Regenerating Kitui with AI + Drones**
 
 A comprehensive platform for community-driven reforestation in Kitui County, Kenya, combining satellite data analysis, AI-powered recommendations, and real-time project tracking.
 
-## Features
+![Land ReGen Hackathon 2025](https://img.shields.io/badge/Hackathon-Land%20ReGen%202025-green)
+![React](https://img.shields.io/badge/React-18.3.1-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.5.3-blue)
+![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green)
 
-### 1. Landing Page
+## 🚀 Features
+
+### 🏠 Landing Page
+
 - Mission statement and hackathon branding
 - Overview of platform capabilities
 - Call-to-action to get started
 
-### 2. Interactive GIS Map
+### 🗺️ Interactive GIS Map
+
 - Visualize degraded zones using NDVI satellite data
 - View active and completed reforestation projects
 - Color-coded degradation levels
 - Click-through popups with detailed zone information
 
-### 3. AI Tree Recommender
+### 🤖 AI Tree Recommender
+
 - Input soil type, rainfall, and NDVI score
 - Get personalized native species recommendations
 - View survival rates, growth rates, and benefits
 - AI-generated planting strategies
 
-### 4. Community Dashboard
+### 📊 Community Dashboard
+
 - Track total trees planted across all projects
 - Monitor hectares restored
 - View average survival rates
@@ -32,206 +41,319 @@ A comprehensive platform for community-driven reforestation in Kitui County, Ken
   - Projects by status
   - Carbon sequestration estimates
 
-### 5. Project Management
+### 📋 Project Management
+
 - Create new reforestation projects
 - Track project status (planning, active, completed)
 - Record tree planting activities
 - Monitor survival rates over time
 
-## Tech Stack
+### 👥 User Authentication
 
-- **Frontend**: React + TypeScript + Vite
-- **Styling**: Tailwind CSS
+- Secure user registration and login
+- Role-based access control (Viewer, Contributor, Admin)
+- User profile management
+- Session persistence
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React 18.3.1 + TypeScript 5.5.3 + Vite 5.4.2
+- **Styling**: Tailwind CSS 3.4.1
 - **Database**: Supabase (PostgreSQL)
-- **Maps**: Leaflet.js + React-Leaflet
-- **Charts**: Recharts
-- **AI**: Logic-based recommendation engine (extensible to Claude/OpenAI)
-- **Icons**: Lucide React
+- **Authentication**: Supabase Auth with PKCE flow
+- **Maps**: Leaflet.js 1.9.4 + React-Leaflet 4.2.1
+- **Charts**: Recharts 2.12.7
+- **AI**: Google Generative AI (Gemini) + Logic-based recommendations
+- **Icons**: Lucide React 0.460.0
+- **Notifications**: React Hot Toast 2.6.0
 
-## Getting Started
+## 📦 Installation
 
 ### Prerequisites
+
 - Node.js 18+ installed
 - Supabase project created
 - Environment variables configured
 
-### Installation
+### 1. Clone the Repository
 
-1. Install dependencies:
+```bash
+git clone <repository-url>
+cd LandReGenHackathon2025
+```
+
+### 2. Install Dependencies
+
 ```bash
 npm install
 ```
 
-2. Configure environment variables:
-Create a `.env` file with your Supabase credentials:
-```
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_anon_key
-```
+### 3. Environment Setup
 
-3. Run database migrations:
-The migration file is already created at `supabase/migrations/20251009170352_create_reforestation_schema.sql`
-
-### Seeding the Database
-
-To populate the database with sample data from the Kitui dataset:
+Create a `.env` file in the project root:
 
 ```bash
-npm run seed
+# Supabase Configuration
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key-here
+
+# Google AI (Optional - for enhanced recommendations)
+VITE_GOOGLE_AI_API_KEY=your-google-ai-key
+
+# OpenWeather API (Optional - for weather data)
+VITE_OPENWEATHER_API_KEY=your-openweather-key
 ```
 
-This will:
-- Load data from `data/kitui_reforest_dataset.csv`
-- Create tree species records with full details
-- Add degraded zones with NDVI scores and soil information
-- Set up relationships between species and zones
+### 4. Database Setup
 
-### Running the Application
+Run the database migration in your Supabase project:
 
-Development mode:
+```sql
+-- The migration file is located at:
+-- supabase/migrations/001_initial_schema.sql
+```
+
+### 5. Start Development Server
+
 ```bash
 npm run dev
 ```
 
-Build for production:
-```bash
-npm run build
+The application will be available at `http://localhost:5173`
+
+## 🗄️ Database Schema
+
+### Core Tables
+
+#### `tree_species`
+
+- Native tree species data with scientific names
+- Rainfall requirements (min/max)
+- Soil compatibility arrays
+- Survival rates and growth characteristics
+- Benefits and planting methods
+
+#### `degraded_zones`
+
+- Identified degraded areas with coordinates
+- NDVI scores and degradation levels
+- Soil type and rainfall data
+- Polygon data for mapping
+
+#### `reforestation_projects`
+
+- Community project details
+- Organization information
+- Target metrics and status tracking
+- Geographic coordinates
+
+#### `planting_records`
+
+- Tree planting events and quantities
+- Species and location data
+- Survival monitoring over time
+- Notes and observations
+
+#### `user_profiles`
+
+- User account information
+- Role-based access control
+- Profile metadata
+
+#### `ai_recommendations`
+
+- AI-generated species suggestions
+- Input parameters and scoring
+- Planting strategies
+
+## 🏗️ Project Structure
+
 ```
-
-Preview production build:
-```bash
-npm run preview
-```
-
-## Database Schema
-
-### Tables
-
-1. **tree_species** - Native tree species data
-   - Name, scientific name, description
-   - Rainfall requirements (min/max)
-   - Soil compatibility
-   - Survival rates and growth rates
-   - Benefits and planting methods
-
-2. **degraded_zones** - Identified degraded areas
-   - Location coordinates
-   - NDVI scores
-   - Degradation levels
-   - Soil type and rainfall data
-
-3. **reforestation_projects** - Community projects
-   - Project details and status
-   - Organization information
-   - Target trees and area coverage
-   - Contact information
-
-4. **planting_records** - Tree planting events
-   - Species and quantity planted
-   - Location and date
-   - Survival monitoring data
-   - Notes and observations
-
-5. **ai_recommendations** - AI-generated suggestions
-   - Input parameters (soil, rainfall, degradation)
-   - Recommended species with scores
-   - Planting strategies
-
-## Project Structure
-
-```
-kitui-reforest-ai/
-├── data/
-│   └── kitui_reforest_dataset.csv    # Sample data
-├── scripts/
-│   └── seed-database.ts              # Database seeding script
+LandReGenHackathon2025/
 ├── src/
 │   ├── components/
-│   │   ├── LandingPage.tsx          # Home page
-│   │   ├── MapView.tsx              # Interactive map
-│   │   ├── Dashboard.tsx            # Analytics
-│   │   ├── AIRecommendations.tsx    # AI recommender
-│   │   ├── ProjectForm.tsx          # Create projects
-│   │   └── PlantingRecordForm.tsx   # Log plantings
+│   │   ├── Auth/                 # Authentication components
+│   │   │   ├── AuthModal.tsx
+│   │   │   ├── LoginForm.tsx
+│   │   │   ├── SignupForm.tsx
+│   │   │   └── UserProfile.tsx
+│   │   ├── guards/
+│   │   │   └── RoleGuard.tsx     # Role-based access control
+│   │   ├── AIImageVerification.tsx
+│   │   ├── AIRecommendations.tsx
+│   │   ├── ChatAssistant.tsx
+│   │   ├── Dashboard.tsx
+│   │   ├── LandingPage.tsx
+│   │   ├── MapView.tsx
+│   │   ├── PlantingRecordForm.tsx
+│   │   ├── ProjectForm.tsx
+│   │   └── WeatherPanel.tsx
+│   ├── contexts/
+│   │   └── AuthContext.tsx       # Authentication context
 │   ├── lib/
-│   │   └── supabase.ts              # Supabase client
-│   ├── App.tsx                       # Main app component
-│   └── main.tsx                      # Entry point
+│   │   ├── cors-utils.ts         # CORS utilities
+│   │   └── supabase.ts           # Supabase client
+│   ├── types/
+│   │   └── auth.ts               # TypeScript definitions
+│   ├── data/
+│   │   └── fallbackRecommendations.ts
+│   ├── App.tsx
+│   └── main.tsx
 ├── supabase/
-│   └── migrations/                   # Database migrations
-└── package.json
+│   └── migrations/
+│       └── 001_initial_schema.sql
+├── public/
+├── package.json
+├── vite.config.ts
+├── tailwind.config.js
+└── tsconfig.json
 ```
 
-## Key Features Explained
+## 🔧 Development Commands
 
-### NDVI Integration
-The platform uses Normalized Difference Vegetation Index (NDVI) scores to identify degraded areas. NDVI ranges from -1 to 1, where:
-- Values close to 1 indicate healthy vegetation
-- Values close to 0 indicate bare soil or degraded land
-- The CSV data includes degradation scores that are inverted to NDVI
+```bash
+# Development server
+npm run dev
 
-### AI Recommendation Engine
-The recommendation system considers:
-- Rainfall compatibility (species min/max vs. site rainfall)
-- Soil type matching
-- Survival rate optimization
-- Growth rate selection based on degradation severity
-- Drought resistance for low rainfall areas
-- Soil improvement capabilities for degraded sites
+# Build for production
+npm run build
 
-### Community Tracking
-All projects and planting records are publicly visible to:
-- Encourage transparency
-- Enable collaboration between communities
-- Track collective impact
-- Share success stories and lessons learned
+# Preview production build
+npm run preview
 
-## Color Scheme
+# Type checking
+npm run typecheck
 
-The platform uses an earthy, natural palette:
+# Linting
+npm run lint
+
+# Test Supabase connection
+node src/test-cors-node.js
+```
+
+## 🌍 Environment Configuration
+
+### Supabase Setup
+
+1. Create a new project at [supabase.com](https://supabase.com)
+2. Go to Settings → API
+3. Copy your Project URL and anon key
+4. Configure authentication settings:
+   - Site URL: `http://localhost:5173` (development)
+   - Additional redirect URLs: `http://localhost:5173`
+
+### Optional APIs
+
+- **Google AI**: For enhanced AI recommendations
+- **OpenWeather**: For weather data integration
+
+## 🎨 Design System
+
+### Color Palette
+
 - **Primary**: Emerald green (#10b981) - growth and restoration
-- **Secondary**: Teal (#14b8a6) - water and sustainability
+- **Secondary**: Teal (#14b8a6) - water and sustainability  
 - **Accent**: Green (#22c55e) - nature and life
 - **Neutral**: Slate grays - professional and clean
 
-## Hackathon Alignment
+### Typography
+
+- **Headings**: Inter font family
+- **Body**: System font stack
+- **Code**: JetBrains Mono
+
+## 🔐 Authentication & Security
+
+- **PKCE Flow**: Secure authentication with Supabase
+- **Role-Based Access**: Viewer, Contributor, Admin roles
+- **CORS Configuration**: Properly configured for cross-origin requests
+- **Environment Variables**: Secure credential management
+
+## 🚀 Deployment
+
+### Render.com (Recommended)
+
+The project includes a `render.yaml` configuration file for easy deployment:
+
+1. Connect your GitHub repository to Render
+2. Render will automatically detect the configuration
+3. Set environment variables in Render dashboard
+4. Deploy with one click
+
+### Manual Deployment
+
+```bash
+# Build the project
+npm run build
+
+# Deploy the dist/ folder to your hosting provider
+```
+
+## 📊 Key Features Explained
+
+### NDVI Integration
+
+- Uses Normalized Difference Vegetation Index scores
+- Identifies degraded areas automatically
+- Color-coded visualization on maps
+
+### AI Recommendation Engine
+
+- Considers rainfall compatibility
+- Matches soil types with species
+- Optimizes survival rates
+- Provides planting strategies
+
+### Community Tracking
+
+- Public project visibility
+- Collaborative impact tracking
+- Transparent progress monitoring
+
+## 🎯 Hackathon Alignment
 
 This MVP demonstrates:
-- **AI Integration**: Species recommendation engine
-- **GIS Technology**: Interactive mapping with Leaflet
-- **Community Engagement**: Collaborative project tracking
-- **Data-Driven**: NDVI analysis and survival monitoring
-- **Climate Resilience**: Drought-tolerant species selection
-- **Scalability**: Modular architecture for future expansion
 
-## Future Enhancements
+- ✅ **AI Integration**: Species recommendation engine
+- ✅ **GIS Technology**: Interactive mapping with Leaflet
+- ✅ **Community Engagement**: Collaborative project tracking
+- ✅ **Data-Driven**: NDVI analysis and survival monitoring
+- ✅ **Climate Resilience**: Drought-tolerant species selection
+- ✅ **Scalability**: Modular architecture for future expansion
 
-- Integration with Claude/OpenAI API for advanced recommendations
-- Drone imagery processing for NDVI calculation
-- Mobile app for field data collection
-- Real-time notifications for planting activities
-- Species identification using computer vision
-- Weather data integration
-- Community forums and knowledge sharing
-- Gamification and leaderboards
+## 🔮 Future Enhancements
 
-## Contributing
+- [ ] Drone imagery processing for real-time NDVI
+- [ ] Mobile app for field data collection
+- [ ] Real-time notifications and alerts
+- [ ] Species identification using computer vision
+- [ ] Community forums and knowledge sharing
+- [ ] Gamification and leaderboards
+- [ ] Carbon credit tracking
+- [ ] Integration with IoT sensors
 
-This is a hackathon MVP. For production deployment:
-1. Add authentication for project creation
-2. Implement RLS policies for data ownership
-3. Add email notifications
-4. Set up continuous monitoring
-5. Optimize bundle size with code splitting
+## 🤝 Contributing
 
-## License
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📄 License
 
 Built for Land ReGen Hackathon 2025
 
-## Contact
+## 📞 Support
 
-For questions about this project or the hackathon submission, please contact the development team.
+For questions or support:
+
+- Create an issue in the repository
+- Contact the development team
+- Check the documentation
 
 ---
 
 **Regenerating Kitui, one tree at a time** 🌳
+
+*Built with ❤️ for the Land ReGen Hackathon 2025*
