@@ -24,7 +24,7 @@ export default defineConfig({
       'kitui-reforest-ai.onrender.com',
       'localhost',
       '127.0.0.1',
-      '0.0.0.0'
+      '0.0.0.0',
     ],
     headers: {
       'Access-Control-Allow-Origin': '*',
