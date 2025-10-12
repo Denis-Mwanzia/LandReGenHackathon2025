@@ -9,6 +9,13 @@ A comprehensive platform for community-driven reforestation in Kitui County, Ken
 ![React](https://img.shields.io/badge/React-18.3.1-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.5.3-blue)
 ![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green)
+![Deployment](https://img.shields.io/badge/Deployment-Live%20on%20Render-brightgreen)
+
+## 🌐 Live Application
+
+**🚀 [View Live Demo](https://kitui-reforest-ai.onrender.com)** - Experience the full platform in action
+
+**📊 [Pitch Deck](https://gamma.app/docs/Kitui-ReForest-AI-Regeneration-Through-Innovation-nmul39zas8i0zba)** - Comprehensive project overview and presentation
 
 ## 🚀 Features
 
