@@ -1,41 +1,25 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
-import { toast } from 'react-hot-toast';
-import { User, LogOut, Settings, Mail, Calendar } from 'lucide-react';
+import { useState } from 'react';
+import { User, LogOut, Settings, Mail, Calendar, Shield } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
 
 type UserProfileProps = {
   onLogout: () => void;
 };
 
 export default function UserProfile({ onLogout }: UserProfileProps) {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-        setUser(user);
-      } catch (error) {
-        console.error('Error getting user:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getUser();
-  }, []);
+  const { user, signOut } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const handleLogout = async () => {
+    setLoading(true);
     try {
-      await supabase.auth.signOut();
-      toast.success('Logged out successfully');
+      await signOut();
       onLogout();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Logout error:', error);
-      toast.error('Logout failed');
+      // Error handling is done in the context
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,9 +39,12 @@ export default function UserProfile({ onLogout }: UserProfileProps) {
     return null;
   }
 
-  const fullName = user.user_metadata?.full_name || 'User';
+  const fullName = user.full_name || 'User';
   const email = user.email || '';
-  const createdAt = new Date(user.created_at).toLocaleDateString();
+  const role = user.role || 'viewer';
+  const createdAt = user.created_at
+    ? new Date(user.created_at).toLocaleDateString()
+    : 'Unknown';
 
   return (
     <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6 max-w-md mx-auto">
@@ -66,6 +53,12 @@ export default function UserProfile({ onLogout }: UserProfileProps) {
           <User className="text-white" size={28} />
         </div>
         <h2 className="text-xl font-bold text-slate-800 mb-1">{fullName}</h2>
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <Shield className="text-emerald-600" size={16} />
+          <span className="text-emerald-700 font-semibold text-sm capitalize">
+            {role}
+          </span>
+        </div>
         <p className="text-slate-600 text-sm">Community Member</p>
       </div>
 

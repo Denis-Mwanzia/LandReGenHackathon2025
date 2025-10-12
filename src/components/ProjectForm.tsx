@@ -85,6 +85,7 @@ export default function ProjectForm({
         <button
           onClick={() => setShowForm(false)}
           className="text-slate-500 hover:text-slate-700"
+          title="Close form"
         >
           <X size={24} />
         </button>
@@ -170,6 +171,7 @@ export default function ProjectForm({
                 })
               }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              title="Enter latitude coordinate"
             />
           </div>
 
@@ -189,6 +191,7 @@ export default function ProjectForm({
                 })
               }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              title="Enter longitude coordinate"
             />
           </div>
 
@@ -241,6 +244,7 @@ export default function ProjectForm({
                 setFormData({ ...formData, status: e.target.value })
               }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              title="Select project status"
             >
               <option value="planning">Planning</option>
               <option value="active">Active</option>
@@ -259,6 +263,7 @@ export default function ProjectForm({
                 setFormData({ ...formData, start_date: e.target.value })
               }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              title="Select project start date"
             />
           </div>
         </div>

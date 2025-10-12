@@ -125,6 +125,7 @@ export default function PlantingRecordForm({
         <button
           onClick={() => setShowForm(false)}
           className="text-slate-500 hover:text-slate-700"
+          title="Close form"
         >
           <X size={24} />
         </button>
@@ -143,6 +144,7 @@ export default function PlantingRecordForm({
                 setFormData({ ...formData, project_id: e.target.value })
               }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              title="Select a project"
             >
               <option value="">Select a project</option>
               {projects.map((project) => (
@@ -164,6 +166,7 @@ export default function PlantingRecordForm({
                 setFormData({ ...formData, species_id: e.target.value })
               }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              title="Select tree species"
             >
               <option value="">Select a species</option>
               {species.map((sp) => (
@@ -188,6 +191,7 @@ export default function PlantingRecordForm({
               }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
               placeholder="e.g., 500"
+              title="Enter number of trees planted"
             />
           </div>
 
@@ -203,6 +207,7 @@ export default function PlantingRecordForm({
                 setFormData({ ...formData, planting_date: e.target.value })
               }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              title="Select planting date"
             />
           </div>
 
@@ -222,6 +227,7 @@ export default function PlantingRecordForm({
                 })
               }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              title="Enter latitude coordinate"
             />
           </div>
 
@@ -241,6 +247,7 @@ export default function PlantingRecordForm({
                 })
               }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              title="Enter longitude coordinate"
             />
           </div>
 
@@ -262,6 +269,7 @@ export default function PlantingRecordForm({
               }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
               placeholder="Trees surviving"
+              title="Enter number of surviving trees"
             />
           </div>
 
@@ -276,6 +284,7 @@ export default function PlantingRecordForm({
                 setFormData({ ...formData, last_monitored: e.target.value })
               }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              title="Select last monitoring date"
             />
           </div>
         </div>

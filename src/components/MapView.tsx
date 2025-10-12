@@ -48,7 +48,26 @@ function LocationMarker({
 
   return position === null ? null : (
     <Marker position={position}>
-      <Popup>New location selected</Popup>
+      <Popup>
+        <div className="p-2">
+          <div className="flex items-center gap-2 mb-2">
+            <MapPin size={16} className="text-blue-600" />
+            <h3 className="font-bold text-sm">Location Selected</h3>
+          </div>
+          <div className="text-xs space-y-1">
+            <p>
+              <strong>Latitude:</strong> {position[0].toFixed(4)}
+            </p>
+            <p>
+              <strong>Longitude:</strong> {position[1].toFixed(4)}
+            </p>
+            <p className="text-blue-600 mt-2">
+              ✅ This location can now be used for weather forecasts and AI
+              recommendations
+            </p>
+          </div>
+        </div>
+      </Popup>
     </Marker>
   );
 }
@@ -241,6 +260,19 @@ export default function MapView({
 
         {allowPinDrop && <LocationMarker onLocationSelect={onLocationSelect} />}
       </MapContainer>
+
+      <div className="absolute top-4 left-4 bg-white rounded-lg shadow-lg p-3 z-[1000] max-w-xs">
+        <div className="flex items-center gap-2 mb-2">
+          <MapPin className="text-blue-600" size={16} />
+          <span className="text-sm font-semibold text-blue-700">
+            Click to Select Location
+          </span>
+        </div>
+        <p className="text-xs text-slate-600">
+          Click anywhere on the map to select a location for weather forecasts
+          and AI recommendations.
+        </p>
+      </div>
 
       <div className="absolute top-4 right-4 bg-white rounded-lg shadow-lg p-4 z-[1000] max-w-xs">
         <h3 className="font-bold text-sm mb-3">Map Legend</h3>

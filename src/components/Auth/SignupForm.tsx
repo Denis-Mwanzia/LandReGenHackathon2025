@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { supabase } from '../../lib/supabase';
 import { toast } from 'react-hot-toast';
-import { Eye, EyeOff, Mail, Lock, User, UserPlus } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, UserPlus, Shield } from 'lucide-react';
+import { UserRole, ROLE_DESCRIPTIONS } from '../../types/auth';
+import { useAuth } from '../../contexts/AuthContext';
 
 type SignupFormProps = {
   onSuccess: () => void;
@@ -17,10 +18,12 @@ export default function SignupForm({
     email: '',
     password: '',
     confirmPassword: '',
+    role: 'viewer' as UserRole,
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { signUp, signInWithGoogle } = useAuth();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,27 +41,16 @@ export default function SignupForm({
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          data: {
-            full_name: formData.fullName,
-          },
-        },
-      });
-
-      if (error) throw error;
-
-      if (data.user && !data.user.email_confirmed_at) {
-        toast.success('Check your email for verification link!');
-      } else {
-        toast.success('Account created successfully!');
-        onSuccess();
-      }
+      await signUp(
+        formData.email,
+        formData.password,
+        formData.fullName,
+        formData.role
+      );
+      onSuccess();
     } catch (error: any) {
       console.error('Signup error:', error);
-      toast.error(error.message || 'Signup failed');
+      // Error handling is done in the context
     } finally {
       setLoading(false);
     }
@@ -66,27 +58,10 @@ export default function SignupForm({
 
   const handleGoogleSignup = async () => {
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}`,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          },
-        },
-      });
-
-      if (error) {
-        console.error('Google signup error:', error);
-        toast.error(
-          'Google OAuth not configured. Please use email/password sign up.'
-        );
-        return;
-      }
+      await signInWithGoogle();
     } catch (error: any) {
       console.error('Google signup error:', error);
-      toast.error('Google signup failed. Please try email/password sign up.');
+      // Error handling is done in the context
     }
   };
 
@@ -205,6 +180,38 @@ export default function SignupForm({
               {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-1">
+            Role
+          </label>
+          <div className="relative">
+            <Shield
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"
+              size={18}
+            />
+            <select
+              value={formData.role}
+              onChange={(e) =>
+                setFormData({ ...formData, role: e.target.value as UserRole })
+              }
+              className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-white"
+              title="Select your role"
+            >
+              <option value="viewer">Viewer - Read-only access</option>
+              <option value="volunteer">
+                Volunteer - Can record planting activities
+              </option>
+              <option value="manager">
+                Manager - Can create projects and manage teams
+              </option>
+              <option value="admin">Admin - Full system access</option>
+            </select>
+          </div>
+          <p className="text-xs text-slate-500 mt-1">
+            {ROLE_DESCRIPTIONS[formData.role]}
+          </p>
         </div>
 
         <button

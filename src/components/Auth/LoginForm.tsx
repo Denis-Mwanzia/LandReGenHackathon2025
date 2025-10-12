@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { supabase } from '../../lib/supabase';
-import { toast } from 'react-hot-toast';
 import { Eye, EyeOff, Mail, Lock, LogIn } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
 
 type LoginFormProps = {
   onSuccess: () => void;
@@ -16,24 +15,18 @@ export default function LoginForm({
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { signIn, signInWithGoogle } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) throw error;
-
-      toast.success('Welcome back!');
+      await signIn(email, password);
       onSuccess();
     } catch (error: any) {
       console.error('Login error:', error);
-      toast.error(error.message || 'Login failed');
+      // Error handling is done in the context
     } finally {
       setLoading(false);
     }
@@ -41,27 +34,10 @@ export default function LoginForm({
 
   const handleGoogleLogin = async () => {
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}`,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          },
-        },
-      });
-
-      if (error) {
-        console.error('Google login error:', error);
-        toast.error(
-          'Google OAuth not configured. Please use email/password sign in.'
-        );
-        return;
-      }
+      await signInWithGoogle();
     } catch (error: any) {
       console.error('Google login error:', error);
-      toast.error('Google login failed. Please try email/password sign in.');
+      // Error handling is done in the context
     }
   };
 

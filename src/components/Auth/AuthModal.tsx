@@ -3,32 +3,24 @@ import { X, User } from 'lucide-react';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import UserProfile from './UserProfile';
+import { useAuth } from '../../contexts/AuthContext';
 
 type AuthModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  user: any;
-  onUserChange: (user: any) => void;
 };
 
-export default function AuthModal({
-  isOpen,
-  onClose,
-  user,
-  onUserChange,
-}: AuthModalProps) {
+export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [authMode, setAuthMode] = useState<'login' | 'signup' | 'profile'>(
     'login'
   );
+  const { user } = useAuth();
 
   const handleAuthSuccess = () => {
-    // Refresh user data
-    onUserChange(null); // Will be updated by parent component
     setAuthMode('profile');
   };
 
   const handleLogout = () => {
-    onUserChange(null);
     setAuthMode('login');
     onClose();
   };

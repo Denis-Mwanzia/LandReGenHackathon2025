@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react';
-import { supabase } from './lib/supabase';
 import LandingPage from './components/LandingPage';
 import MapView from './components/MapView';
 import Dashboard from './components/Dashboard';
@@ -10,7 +9,17 @@ import WeatherPanel from './components/WeatherPanel';
 import ChatAssistant from './components/ChatAssistant';
 import AIImageVerification from './components/AIImageVerification';
 import AuthModal from './components/Auth/AuthModal';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { toast, Toaster } from 'react-hot-toast';
+import {
+  MapGuard,
+  DashboardGuard,
+  AIRecommendationsGuard,
+  ProjectCreationGuard,
+  PlantingGuard,
+  WeatherGuard,
+  VerificationGuard,
+} from './components/guards/RoleGuard';
 import {
   TreePine,
   BarChart3,
@@ -35,35 +44,16 @@ type TabType =
   | 'chat'
   | 'verification';
 
-function App() {
+function AppContent() {
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [selectedLocation, setSelectedLocation] = useState<
     { lat: number; lng: number } | undefined
   >();
   const [refreshKey, setRefreshKey] = useState(0);
-  const [user, setUser] = useState<any>(null);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setUser(session?.user ?? null);
-      if (event === 'SIGNED_IN') {
-        toast.success('Welcome to Kitui Reforest AI!');
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
+  const { user } = useAuth();
 
   // Close mobile menu when clicking outside
   useEffect(() => {
@@ -87,6 +77,7 @@ function App() {
 
   const handleLocationSelect = (lat: number, lng: number) => {
     setSelectedLocation({ lat, lng });
+    toast.success(`Location selected: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
     setActiveTab('ai');
   };
 
@@ -95,16 +86,118 @@ function App() {
     setActiveTab('map');
   };
 
-  const tabs = [
-    { id: 'home' as TabType, label: 'Home', icon: Home },
-    { id: 'map' as TabType, label: 'Interactive Map', icon: MapIcon },
-    { id: 'dashboard' as TabType, label: 'Dashboard', icon: BarChart3 },
-    { id: 'ai' as TabType, label: 'AI Recommendations', icon: Sparkles },
-    { id: 'projects' as TabType, label: 'New Project', icon: TreePine },
-    { id: 'planting' as TabType, label: 'Record Planting', icon: Leaf },
-    { id: 'weather' as TabType, label: 'Climate Insights', icon: Cloud },
-    { id: 'verification' as TabType, label: 'AI Verification', icon: Camera },
-  ];
+  // Role-based tab visibility
+  const getVisibleTabs = () => {
+    const allTabs = [
+      { id: 'home' as TabType, label: 'Home', icon: Home, public: true },
+      {
+        id: 'map' as TabType,
+        label: 'Interactive Map',
+        icon: MapIcon,
+        permission: 'canViewMap',
+      },
+      {
+        id: 'dashboard' as TabType,
+        label: 'Dashboard',
+        icon: BarChart3,
+        permission: 'canViewDashboard',
+      },
+      {
+        id: 'ai' as TabType,
+        label: 'AI Recommendations',
+        icon: Sparkles,
+        permission: 'canViewAIRecommendations',
+      },
+      {
+        id: 'projects' as TabType,
+        label: 'New Project',
+        icon: TreePine,
+        permission: 'canCreateProjects',
+      },
+      {
+        id: 'planting' as TabType,
+        label: 'Record Planting',
+        icon: Leaf,
+        permission: 'canRecordPlanting',
+      },
+      {
+        id: 'weather' as TabType,
+        label: 'Climate Insights',
+        icon: Cloud,
+        permission: 'canViewWeather',
+      },
+      {
+        id: 'verification' as TabType,
+        label: 'AI Verification',
+        icon: Camera,
+        permission: 'canViewVerification',
+      },
+    ];
+
+    // If not authenticated, only show public tabs
+    if (!user) {
+      return allTabs.filter((tab) => tab.public);
+    }
+
+    // Import ROLE_PERMISSIONS here to avoid circular dependency
+    const ROLE_PERMISSIONS = {
+      admin: {
+        canViewMap: true,
+        canViewDashboard: true,
+        canViewAIRecommendations: true,
+        canCreateProjects: true,
+        canRecordPlanting: true,
+        canViewWeather: true,
+        canViewVerification: true,
+        canManageUsers: true,
+        canViewAnalytics: true,
+      },
+      manager: {
+        canViewMap: true,
+        canViewDashboard: true,
+        canViewAIRecommendations: true,
+        canCreateProjects: true,
+        canRecordPlanting: true,
+        canViewWeather: true,
+        canViewVerification: true,
+        canManageUsers: false,
+        canViewAnalytics: true,
+      },
+      volunteer: {
+        canViewMap: true,
+        canViewDashboard: true,
+        canViewAIRecommendations: true,
+        canCreateProjects: false,
+        canRecordPlanting: true,
+        canViewWeather: true,
+        canViewVerification: false,
+        canManageUsers: false,
+        canViewAnalytics: false,
+      },
+      viewer: {
+        canViewMap: true,
+        canViewDashboard: true,
+        canViewAIRecommendations: true,
+        canCreateProjects: false,
+        canRecordPlanting: false,
+        canViewWeather: true,
+        canViewVerification: false,
+        canManageUsers: false,
+        canViewAnalytics: false,
+      },
+    };
+
+    return allTabs.filter(
+      (tab) =>
+        tab.public ||
+        (tab.permission &&
+          ROLE_PERMISSIONS[user.role]?.[
+            tab.permission as keyof typeof ROLE_PERMISSIONS.admin
+          ])
+    );
+  };
+
+  const tabs = getVisibleTabs();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50 to-teal-50">
@@ -155,7 +248,7 @@ function App() {
                 </svg>
                 {user && (
                   <span className="hidden sm:inline text-sm font-medium text-slate-700">
-                    {user.user_metadata?.full_name || 'User'}
+                    {user.full_name || 'User'}
                   </span>
                 )}
               </button>
@@ -278,111 +371,163 @@ function App() {
         )}
 
         {activeTab === 'map' && (
-          <div className="space-y-3 sm:space-y-4">
-            <div className="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl p-4 sm:p-6 text-white">
-              <h2 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2">
-                Interactive GIS Map
-              </h2>
-              <p className="text-emerald-100 text-sm sm:text-base">
-                Explore degraded zones and active reforestation projects across
-                Kitui County
-              </p>
-            </div>
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
-              <div className="h-80 sm:h-96 lg:h-[500px] xl:h-[600px]">
-                <MapView
-                  key={refreshKey}
-                  onLocationSelect={handleLocationSelect}
-                  allowPinDrop={false}
-                />
+          <MapGuard>
+            <div className="space-y-3 sm:space-y-4">
+              <div className="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl p-4 sm:p-6 text-white">
+                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2">
+                  Interactive GIS Map
+                </h2>
+                <p className="text-emerald-100 text-sm sm:text-base">
+                  Explore degraded zones and active reforestation projects
+                  across Kitui County
+                </p>
+              </div>
+              <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
+                <div className="h-80 sm:h-96 lg:h-[500px] xl:h-[600px]">
+                  <MapView
+                    key={refreshKey}
+                    onLocationSelect={handleLocationSelect}
+                    allowPinDrop={true}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </MapGuard>
         )}
 
-        {activeTab === 'dashboard' && <Dashboard key={refreshKey} />}
+        {activeTab === 'dashboard' && (
+          <DashboardGuard>
+            <Dashboard key={refreshKey} />
+          </DashboardGuard>
+        )}
 
         {activeTab === 'ai' && (
-          <div className="space-y-4">
-            <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl p-6 text-white">
-              <h2 className="text-2xl font-bold mb-2">
-                AI Tree Recommendations
-              </h2>
-              <p className="text-purple-100">
-                {selectedLocation
-                  ? `Get personalized species recommendations for ${selectedLocation.lat.toFixed(
-                      4
-                    )}, ${selectedLocation.lng.toFixed(4)}`
-                  : 'Get AI-powered tree species recommendations based on soil, climate, and degradation data'}
-              </p>
+          <AIRecommendationsGuard>
+            <div className="space-y-4">
+              <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl p-6 text-white">
+                <h2 className="text-2xl font-bold mb-2">
+                  AI Tree Recommendations
+                </h2>
+                <p className="text-purple-100">
+                  {selectedLocation
+                    ? `Get personalized species recommendations for ${selectedLocation.lat.toFixed(
+                        4
+                      )}, ${selectedLocation.lng.toFixed(4)}`
+                    : 'Get AI-powered tree species recommendations based on soil, climate, and degradation data'}
+                </p>
+              </div>
+              <AIRecommendations
+                latitude={selectedLocation?.lat}
+                longitude={selectedLocation?.lng}
+              />
             </div>
-            <AIRecommendations
-              latitude={selectedLocation?.lat}
-              longitude={selectedLocation?.lng}
-            />
-          </div>
+          </AIRecommendationsGuard>
         )}
 
         {activeTab === 'projects' && (
-          <ProjectForm
-            preselectedLocation={selectedLocation}
-            onSuccess={handleFormSuccess}
-          />
+          <ProjectCreationGuard>
+            <ProjectForm
+              preselectedLocation={selectedLocation}
+              onSuccess={handleFormSuccess}
+            />
+          </ProjectCreationGuard>
         )}
 
         {activeTab === 'planting' && (
-          <PlantingRecordForm onSuccess={handleFormSuccess} />
+          <PlantingGuard>
+            <PlantingRecordForm onSuccess={handleFormSuccess} />
+          </PlantingGuard>
         )}
 
         {activeTab === 'weather' && (
-          <div className="space-y-4">
-            <div className="bg-gradient-to-r from-blue-500 to-cyan-600 rounded-xl p-6 text-white">
-              <h2 className="text-2xl font-bold mb-2">Climate Insights</h2>
-              <p className="text-blue-100">
-                Weather forecasts and planting condition recommendations for
-                optimal reforestation timing
-              </p>
-            </div>
-
-            {selectedLocation ? (
-              <WeatherPanel
-                lat={selectedLocation.lat}
-                lng={selectedLocation.lng}
-              />
-            ) : (
-              <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-8 text-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Cloud className="text-blue-500" size={40} />
-                </div>
-                <h3 className="text-xl font-bold text-slate-800 mb-2">
-                  Select a Location
-                </h3>
-                <p className="text-slate-600 mb-6 max-w-md mx-auto">
-                  Choose a location on the Interactive Map to view weather
-                  forecasts and planting recommendations for that specific area.
+          <WeatherGuard>
+            <div className="space-y-4">
+              <div className="bg-gradient-to-r from-blue-500 to-cyan-600 rounded-xl p-6 text-white">
+                <h2 className="text-2xl font-bold mb-2">Climate Insights</h2>
+                <p className="text-blue-100">
+                  Weather forecasts and planting condition recommendations for
+                  optimal reforestation timing
                 </p>
-                <button
-                  onClick={() => setActiveTab('map')}
-                  className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
-                >
-                  Go to Interactive Map
-                </button>
               </div>
-            )}
-          </div>
+
+              {selectedLocation ? (
+                <div className="space-y-4">
+                  <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                        <span className="text-sm font-medium text-emerald-700">
+                          Location Selected
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => setActiveTab('map')}
+                        className="text-xs text-emerald-600 hover:text-emerald-800 underline"
+                      >
+                        Change Location
+                      </button>
+                    </div>
+                    <p className="text-sm text-emerald-600 mt-1">
+                      Weather data for: {selectedLocation.lat.toFixed(4)},{' '}
+                      {selectedLocation.lng.toFixed(4)}
+                    </p>
+                  </div>
+                  <WeatherPanel
+                    lat={selectedLocation.lat}
+                    lng={selectedLocation.lng}
+                  />
+                </div>
+              ) : (
+                <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-8 text-center">
+                  <div className="w-20 h-20 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Cloud className="text-blue-500" size={40} />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-800 mb-2">
+                    Select a Location
+                  </h3>
+                  <p className="text-slate-600 mb-6 max-w-md mx-auto">
+                    Choose a location on the Interactive Map to view weather
+                    forecasts and planting recommendations for that specific
+                    area.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button
+                      onClick={() => setActiveTab('map')}
+                      className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+                    >
+                      Go to Interactive Map
+                    </button>
+                    <button
+                      onClick={() => {
+                        // Set default Kitui County coordinates
+                        setSelectedLocation({ lat: -1.2847, lng: 38.0138 });
+                      }}
+                      className="bg-slate-100 text-slate-700 px-8 py-3 rounded-lg font-semibold hover:bg-slate-200 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+                    >
+                      Use Kitui County Default
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </WeatherGuard>
         )}
 
         {activeTab === 'verification' && (
-          <div className="space-y-4">
-            <div className="bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl p-6 text-white">
-              <h2 className="text-2xl font-bold mb-2">AI Image Verification</h2>
-              <p className="text-purple-100">
-                Upload before/after drone photos for AI-powered vegetation
-                growth analysis and restoration progress validation
-              </p>
+          <VerificationGuard>
+            <div className="space-y-4">
+              <div className="bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl p-6 text-white">
+                <h2 className="text-2xl font-bold mb-2">
+                  AI Image Verification
+                </h2>
+                <p className="text-purple-100">
+                  Upload before/after drone photos for AI-powered vegetation
+                  growth analysis and restoration progress validation
+                </p>
+              </div>
+              <AIImageVerification />
             </div>
-            <AIImageVerification />
-          </div>
+          </VerificationGuard>
         )}
       </main>
 
@@ -393,8 +538,6 @@ function App() {
       <AuthModal
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
-        user={user}
-        onUserChange={setUser}
       />
 
       {/* Toast Notifications */}
@@ -494,6 +637,14 @@ function App() {
         </div>
       </footer>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 
