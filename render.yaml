@@ -3,7 +3,8 @@ services:
     name: kitui-reforest-ai
     env: node
     plan: free
-    buildCommand: npm install && npm run build
+    nodeVersion: 18.18.0
+    buildCommand: rm -rf node_modules package-lock.json && npm install && npm run build
     startCommand: npm run preview
     envVars:
       - key: VITE_SUPABASE_URL
