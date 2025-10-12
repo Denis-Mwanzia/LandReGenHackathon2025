@@ -5,7 +5,7 @@ services:
     plan: free
     nodeVersion: 18.18.0
     buildCommand: rm -rf node_modules package-lock.json && npm install && npm run build
-    startCommand: npm run preview
+    startCommand: npm run preview -- --host 0.0.0.0
     envVars:
       - key: VITE_SUPABASE_URL
         sync: false
