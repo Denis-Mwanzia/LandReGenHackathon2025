@@ -6,7 +6,6 @@ import {
   Popup,
   Circle,
   useMapEvents,
-  WMSLayer,
 } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -132,17 +131,18 @@ export default function MapView({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         />
 
-        <WMSLayer
-          url="https://services.sentinel-hub.com/ogc/wms/{instance-id}"
-          params={{
-            layers: 'NDVI',
-            format: 'image/png',
-            transparent: true,
-            time: '2024-01-01/2024-12-31',
-            apikey: 'YOUR_SENTINEL_HUB_API_KEY',
-          }}
-          opacity={0.6}
-        />
+        {/* NDVI Overlay Layer - To add satellite imagery overlay:
+            Option 1: Use Leaflet's ImageOverlay with pre-generated NDVI tiles
+            Option 2: Use a custom WMS layer component
+            Option 3: Integrate with Sentinel Hub's Process API for dynamic NDVI generation
+            
+            Example implementation:
+            <ImageOverlay
+              url="path-to-ndvi-tiles/{z}/{x}/{y}.png"
+              bounds={[[-2.0, 37.0], [-1.0, 39.0]]}
+              opacity={0.6}
+            />
+        */}
 
         {degradedZones.map((zone) => (
           <Circle

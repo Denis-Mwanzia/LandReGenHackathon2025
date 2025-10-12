@@ -1,13 +1,16 @@
 import { useState } from 'react';
-import { supabase, TreeSpecies } from '../lib/supabase';
-import { MapPin, Plus, X } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+import { Plus, X } from 'lucide-react';
 
 type ProjectFormProps = {
   onSuccess?: () => void;
   preselectedLocation?: { lat: number; lng: number };
 };
 
-export default function ProjectForm({ onSuccess, preselectedLocation }: ProjectFormProps) {
+export default function ProjectForm({
+  onSuccess,
+  preselectedLocation,
+}: ProjectFormProps) {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -76,7 +79,9 @@ export default function ProjectForm({ onSuccess, preselectedLocation }: ProjectF
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold text-slate-800">New Reforestation Project</h3>
+        <h3 className="text-xl font-bold text-slate-800">
+          New Reforestation Project
+        </h3>
         <button
           onClick={() => setShowForm(false)}
           className="text-slate-500 hover:text-slate-700"
@@ -95,7 +100,9 @@ export default function ProjectForm({ onSuccess, preselectedLocation }: ProjectF
               type="text"
               required
               value={formData.project_name}
-              onChange={(e) => setFormData({ ...formData, project_name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, project_name: e.target.value })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
               placeholder="e.g., Kitui Green Belt Initiative"
             />
@@ -109,7 +116,9 @@ export default function ProjectForm({ onSuccess, preselectedLocation }: ProjectF
               type="text"
               required
               value={formData.organization}
-              onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, organization: e.target.value })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
               placeholder="Community group or NGO name"
             />
@@ -122,7 +131,9 @@ export default function ProjectForm({ onSuccess, preselectedLocation }: ProjectF
             <input
               type="email"
               value={formData.contact_email}
-              onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, contact_email: e.target.value })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
               placeholder="contact@example.com"
             />
@@ -135,7 +146,9 @@ export default function ProjectForm({ onSuccess, preselectedLocation }: ProjectF
             <input
               type="tel"
               value={formData.contact_phone}
-              onChange={(e) => setFormData({ ...formData, contact_phone: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, contact_phone: e.target.value })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
               placeholder="+254 700 000 000"
             />
@@ -150,7 +163,12 @@ export default function ProjectForm({ onSuccess, preselectedLocation }: ProjectF
               step="0.0001"
               required
               value={formData.latitude}
-              onChange={(e) => setFormData({ ...formData, latitude: parseFloat(e.target.value) })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  latitude: parseFloat(e.target.value),
+                })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
             />
           </div>
@@ -164,7 +182,12 @@ export default function ProjectForm({ onSuccess, preselectedLocation }: ProjectF
               step="0.0001"
               required
               value={formData.longitude}
-              onChange={(e) => setFormData({ ...formData, longitude: parseFloat(e.target.value) })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  longitude: parseFloat(e.target.value),
+                })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
             />
           </div>
@@ -178,7 +201,12 @@ export default function ProjectForm({ onSuccess, preselectedLocation }: ProjectF
               step="0.1"
               required
               value={formData.area_hectares}
-              onChange={(e) => setFormData({ ...formData, area_hectares: parseFloat(e.target.value) })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  area_hectares: parseFloat(e.target.value),
+                })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
               placeholder="e.g., 25.5"
             />
@@ -192,7 +220,12 @@ export default function ProjectForm({ onSuccess, preselectedLocation }: ProjectF
               type="number"
               required
               value={formData.target_trees}
-              onChange={(e) => setFormData({ ...formData, target_trees: parseInt(e.target.value) })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  target_trees: parseInt(e.target.value),
+                })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
               placeholder="e.g., 5000"
             />
@@ -204,7 +237,9 @@ export default function ProjectForm({ onSuccess, preselectedLocation }: ProjectF
             </label>
             <select
               value={formData.status}
-              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, status: e.target.value })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
             >
               <option value="planning">Planning</option>
@@ -220,7 +255,9 @@ export default function ProjectForm({ onSuccess, preselectedLocation }: ProjectF
             <input
               type="date"
               value={formData.start_date}
-              onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, start_date: e.target.value })
+              }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
             />
           </div>
@@ -232,7 +269,9 @@ export default function ProjectForm({ onSuccess, preselectedLocation }: ProjectF
           </label>
           <textarea
             value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
             rows={3}
             className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
             placeholder="Describe the project goals and approach..."

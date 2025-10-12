@@ -1,3 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom scrollbar styles */
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* Mobile optimizations */
+@layer utilities {
+    .touch-manipulation {
+        touch-action: manipulation;
+    }
+
+    .safe-area-inset {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+}
+
+/* Custom breakpoint for extra small screens */
+@screen xs {
+    .xs\:inline {
+        display: inline;
+    }
+
+    .xs\:hidden {
+        display: none;
+    }
+}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase, TreeSpecies, ReforestationProject } from '../lib/supabase';
-import { Sprout, Plus, X } from 'lucide-react';
+import { Sprout, X } from 'lucide-react';
 
 type PlantingRecordFormProps = {
   projectId?: string;
@@ -89,14 +89,15 @@ export default function PlantingRecordForm({
     }
   };
 
-  const uploadPhoto = async (file: File) => {
-    const { data, error } = await supabase.storage
-      .from('planting-photos')
-      .upload(`${Date.now()}-${file.name}`, file);
+  // Photo upload functionality - can be implemented when needed
+  // const uploadPhoto = async (file: File) => {
+  //   const { data, error } = await supabase.storage
+  //     .from('planting-photos')
+  //     .upload(`${Date.now()}-${file.name}`, file);
 
-    if (error) throw error;
-    return data.path;
-  };
+  //   if (error) throw error;
+  //   return data.path;
+  // };
 
   if (!showForm) {
     return (
