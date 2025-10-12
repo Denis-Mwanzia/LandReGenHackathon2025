@@ -20,6 +20,12 @@ export default defineConfig({
   preview: {
     port: 4173,
     cors: true,
+    allowedHosts: [
+      'kitui-reforest-ai.onrender.com',
+      'localhost',
+      '127.0.0.1',
+      '0.0.0.0'
+    ],
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
