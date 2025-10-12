@@ -7,7 +7,25 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Enhanced Supabase client configuration for CORS handling
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true,
+    flowType: 'pkce',
+  },
+  global: {
+    headers: {
+      'X-Client-Info': 'kitui-reforest-ai@1.0.0',
+    },
+  },
+  realtime: {
+    params: {
+      eventsPerSecond: 10,
+    },
+  },
+});
 
 export type TreeSpecies = {
   id: string;
@@ -61,7 +79,7 @@ export type PlantingRecord = {
   id: string;
   project_id: string;
   species_id: string;
-  quantity: number;
+  quantity_planted: number;
   planting_date: string;
   latitude: number;
   longitude: number;

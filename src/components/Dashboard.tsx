@@ -54,7 +54,7 @@ export default function Dashboard() {
       // Calculate statistics
       const totalProjects = projects.length;
       const totalTreesPlanted = plantingRecords.reduce(
-        (sum, record) => sum + record.quantity,
+        (sum, record) => sum + record.quantity_planted,
         0
       );
       const totalAreaCovered = projects.reduce(
@@ -69,7 +69,7 @@ export default function Dashboard() {
       const averageSurvivalRate =
         recordsWithSurvival.length > 0
           ? recordsWithSurvival.reduce((sum, r) => {
-              const rate = (r.survival_count! / r.quantity) * 100;
+              const rate = (r.survival_count! / r.quantity_planted) * 100;
               return sum + rate;
             }, 0) / recordsWithSurvival.length
           : 0;
@@ -90,7 +90,7 @@ export default function Dashboard() {
       // Trees by species
       const speciesCounts = plantingRecords.reduce((acc, record) => {
         const speciesName = (record as any).tree_species?.name || 'Unknown';
-        acc[speciesName] = (acc[speciesName] || 0) + record.quantity;
+        acc[speciesName] = (acc[speciesName] || 0) + record.quantity_planted;
         return acc;
       }, {} as Record<string, number>);
 

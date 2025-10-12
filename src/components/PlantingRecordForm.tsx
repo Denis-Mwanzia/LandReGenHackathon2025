@@ -19,7 +19,7 @@ export default function PlantingRecordForm({
   const [formData, setFormData] = useState({
     project_id: projectId || '',
     species_id: '',
-    quantity: 0,
+    quantity_planted: 0,
     planting_date: new Date().toISOString().split('T')[0],
     latitude: -1.3667,
     longitude: 38.01,
@@ -71,7 +71,7 @@ export default function PlantingRecordForm({
       setFormData({
         project_id: projectId || '',
         species_id: '',
-        quantity: 0,
+        quantity_planted: 0,
         planting_date: new Date().toISOString().split('T')[0],
         latitude: -1.3667,
         longitude: 38.01,
@@ -185,9 +185,12 @@ export default function PlantingRecordForm({
               type="number"
               required
               min="1"
-              value={formData.quantity}
+              value={formData.quantity_planted}
               onChange={(e) =>
-                setFormData({ ...formData, quantity: parseInt(e.target.value) })
+                setFormData({
+                  ...formData,
+                  quantity_planted: parseInt(e.target.value),
+                })
               }
               className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
               placeholder="e.g., 500"

@@ -20,7 +20,6 @@ export interface AuthContextType {
     role: UserRole
   ) => Promise<void>;
   signOut: () => Promise<void>;
-  signInWithGoogle: () => Promise<void>;
 }
 
 // Role-based permissions
