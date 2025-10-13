@@ -1,4 +1,3 @@
-
 # 🌳 Kitui Reforest AI - Land ReGen Hackathon 2025
 
 **Regenerating Kitui with AI + Drones**
@@ -10,12 +9,26 @@ A comprehensive platform for community-driven reforestation in Kitui County, Ken
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.5.3-blue)
 ![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green)
 ![Deployment](https://img.shields.io/badge/Deployment-Live%20on%20Render-brightgreen)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 ## 🌐 Live Application
 
 **🚀 [View Live Demo](https://kitui-reforest-ai.onrender.com)** - Experience the full platform in action
 
 **📊 [Pitch Deck](https://gamma.app/docs/Kitui-ReForest-AI-Regeneration-Through-Innovation-nmul39zas8i0zba)** - Comprehensive project overview and presentation
+
+## 📋 Table of Contents
+
+- [Features](#-features)
+- [Tech Stack](#️-tech-stack)
+- [Installation](#-installation)
+- [Database Schema](#️-database-schema)
+- [Project Structure](#️-project-structure)
+- [Development](#-development)
+- [Deployment](#-deployment)
+- [API Documentation](#-api-documentation)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ## 🚀 Features
 
@@ -24,6 +37,7 @@ A comprehensive platform for community-driven reforestation in Kitui County, Ken
 - Mission statement and hackathon branding
 - Overview of platform capabilities
 - Call-to-action to get started
+- Responsive design for all devices
 
 ### 🗺️ Interactive GIS Map
 
@@ -31,6 +45,7 @@ A comprehensive platform for community-driven reforestation in Kitui County, Ken
 - View active and completed reforestation projects
 - Color-coded degradation levels
 - Click-through popups with detailed zone information
+- Real-time weather integration
 
 ### 🤖 AI Tree Recommender
 
@@ -38,6 +53,7 @@ A comprehensive platform for community-driven reforestation in Kitui County, Ken
 - Get personalized native species recommendations
 - View survival rates, growth rates, and benefits
 - AI-generated planting strategies
+- Powered by Google Gemini AI
 
 ### 📊 Community Dashboard
 
@@ -55,6 +71,7 @@ A comprehensive platform for community-driven reforestation in Kitui County, Ken
 - Track project status (planning, active, completed)
 - Record tree planting activities
 - Monitor survival rates over time
+- Role-based access control
 
 ### 🌡️ Climate Insights
 
@@ -70,25 +87,58 @@ A comprehensive platform for community-driven reforestation in Kitui County, Ken
 - Ask questions about tree species, planting techniques, and project management
 - Get instant answers about Kitui County's environmental conditions
 - AI-powered support for community members and project coordinators
+- Available 24/7 for community support
 
-### 👥 User Authentication
+### 👥 User Authentication & Role Management
 
 - Secure user registration and login
-- Role-based access control (Viewer, Contributor, Admin)
+- Role-based access control with 4 user types:
+  - **Viewer**: Read-only access to maps, weather, and AI recommendations
+  - **Volunteer**: Can record planting activities and view project data
+  - **Manager**: Can create projects and manage teams
+  - **Admin**: Full system access including AI verification
 - User profile management
 - Session persistence
 
+### 🔍 AI Image Verification
+
+- Upload before/after drone photos
+- AI-powered vegetation growth analysis
+- Progress validation and verification
+- Quality assurance for reforestation projects
+
 ## 🛠️ Tech Stack
 
-- **Frontend**: React 18.3.1 + TypeScript 5.5.3 + Vite 5.4.2
-- **Styling**: Tailwind CSS 3.4.1
-- **Database**: Supabase (PostgreSQL)
-- **Authentication**: Supabase Auth with PKCE flow
-- **Maps**: Leaflet.js 1.9.4 + React-Leaflet 4.2.1
-- **Charts**: Recharts 2.12.7
-- **AI**: Google Generative AI (Gemini) + Logic-based recommendations
-- **Icons**: Lucide React 0.460.0
-- **Notifications**: React Hot Toast 2.6.0
+### Frontend
+
+- **React 18.3.1** - Modern UI library
+- **TypeScript 5.5.3** - Type-safe development
+- **Vite 5.4.2** - Fast build tool
+- **Tailwind CSS 3.4.1** - Utility-first CSS framework
+
+### Backend & Database
+
+- **Supabase** - Backend-as-a-Service
+- **PostgreSQL** - Relational database
+- **Row Level Security (RLS)** - Data protection
+
+### Maps & Visualization
+
+- **Leaflet.js 1.9.4** - Interactive maps
+- **React-Leaflet 4.2.1** - React integration
+- **Recharts 2.12.7** - Data visualization
+
+### AI & APIs
+
+- **Google Generative AI (Gemini)** - AI recommendations and chat
+- **OpenWeather API** - Weather data
+- **Sentinel Hub API** - Satellite imagery
+
+### Development Tools
+
+- **Lucide React 0.460.0** - Icon library
+- **React Hot Toast 2.6.0** - Notifications
+- **ESLint & Prettier** - Code quality
 
 ## 📦 Installation
 
@@ -100,30 +150,20 @@ A comprehensive platform for community-driven reforestation in Kitui County, Ken
 
 ### 1. Clone the Repository
 
----
-
 ```bash
 git clone <repository-url>
 cd LandReGenHackathon2025
 ```
 
----
-
 ### 2. Install Dependencies
-
----
 
 ```bash
 npm install
 ```
 
----
-
 ### 3. Environment Setup
 
 Create a `.env` file in the project root:
-
----
 
 ```bash
 # Supabase Configuration
@@ -137,30 +177,20 @@ VITE_GOOGLE_AI_API_KEY=your-google-ai-key
 VITE_OPENWEATHER_API_KEY=your-openweather-key
 ```
 
----
-
 ### 4. Database Setup
 
 Run the database migration in your Supabase project:
-
----
 
 ```sql
 -- The migration file is located at:
 -- supabase/migrations/001_initial_schema.sql
 ```
 
----
-
 ### 5. Start Development Server
-
----
 
 ```bash
 npm run dev
 ```
-
----
 
 The application will be available at `http://localhost:5173`
 
@@ -211,8 +241,6 @@ The application will be available at `http://localhost:5173`
 
 ## 🏗️ Project Structure
 
----
-
 ```
 LandReGenHackathon2025/
 ├── src/
@@ -254,11 +282,9 @@ LandReGenHackathon2025/
 └── tsconfig.json
 ```
 
----
+## 🔧 Development
 
-## 🔧 Development Commands
-
----
+### Development Commands
 
 ```bash
 # Development server
@@ -275,16 +301,11 @@ npm run typecheck
 
 # Linting
 npm run lint
-
-# Test Supabase connection
-node src/test-cors-node.js
 ```
 
----
+### Environment Configuration
 
-## 🌍 Environment Configuration
-
-### Supabase Setup
+#### Supabase Setup
 
 1. Create a new project at [supabase.com](https://supabase.com)
 2. Go to Settings → API
@@ -293,7 +314,7 @@ node src/test-cors-node.js
    - Site URL: `http://localhost:5173` (development)
    - Additional redirect URLs: `http://localhost:5173`
 
-### Optional APIs
+#### Optional APIs
 
 - **Google AI**: For enhanced AI recommendations
 - **OpenWeather**: For weather data integration
@@ -311,16 +332,12 @@ The project includes a `render.yaml` configuration file for easy deployment:
 
 ### Manual Deployment
 
----
-
 ```bash
 # Build the project
 npm run build
 
 # Deploy the dist/ folder to your hosting provider
 ```
-
----
 
 ## 📊 Key Features Explained
 
@@ -345,19 +362,19 @@ npm run build
 
 ### Climate Insights
 
-- Real-time weather integration using OpenWeather API for accurate meteorological data
-- Location-specific forecasts to optimize planting timing and species selection
-- Weather-based recommendations for irrigation scheduling and plant care
-- Historical climate data analysis for long-term project planning
-- Seasonal planting calendars tailored to Kitui County's climate patterns
+- Real-time weather integration using OpenWeather API
+- Location-specific forecasts for optimal planting timing
+- Weather-based recommendations for irrigation scheduling
+- Historical climate data analysis for long-term planning
+- Seasonal planting calendars tailored to Kitui County
 
 ### AI Chat Assistant
 
-- Powered by advanced AI technology for instant reforestation guidance
-- Context-aware responses about Kitui County's specific environmental conditions
-- Supports multiple languages for community accessibility
-- Provides expert advice on tree species, planting techniques, and project management
-- Available 24/7 for community support and knowledge sharing
+- Powered by advanced AI technology
+- Context-aware responses about Kitui County's conditions
+- Supports multiple languages for accessibility
+- Provides expert advice on tree species and techniques
+- Available 24/7 for community support
 
 ## 🎯 Hackathon Alignment
 
@@ -365,11 +382,12 @@ This MVP demonstrates:
 
 - ✅ **AI Integration**: Species recommendation engine + AI chat assistant
 - ✅ **GIS Technology**: Interactive mapping with Leaflet
-- ✅ **Climate Intelligence**: Real-time weather data + climate-based planting guidance
+- ✅ **Climate Intelligence**: Real-time weather data + climate-based guidance
 - ✅ **Community Engagement**: Collaborative project tracking + 24/7 AI support
 - ✅ **Data-Driven**: NDVI analysis and survival monitoring
 - ✅ **Climate Resilience**: Drought-tolerant species selection + weather optimization
 - ✅ **Scalability**: Modular architecture for future expansion
+- ✅ **Role-Based Access**: Secure user management with different permission levels
 
 ## 🔮 Future Enhancements
 
@@ -381,18 +399,48 @@ This MVP demonstrates:
 - [ ] Gamification and leaderboards
 - [ ] Carbon credit tracking
 - [ ] Integration with IoT sensors
+- [ ] Multi-language support
+- [ ] Offline functionality
+
+## 🧪 Testing
+
+### Manual Testing
+
+- User registration and authentication
+- Role-based access control
+- Feature accessibility by role
+- Mobile responsiveness
+- AI recommendations functionality
+- Weather data integration
+
+### Test Accounts
+
+- **Admin**: Full access to all features
+- **Manager**: Project creation and team management
+- **Volunteer**: Planting activity recording
+- **Viewer**: Read-only access
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
 4. Test thoroughly
-5. Submit a pull request
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Submit a pull request
+
+### Development Guidelines
+
+- Follow TypeScript best practices
+- Use Tailwind CSS for styling
+- Write meaningful commit messages
+- Test your changes thoroughly
+- Update documentation as needed
 
 ## 📄 License
 
-Built for Land ReGen Hackathon 2025
+This project is built for the Land ReGen Hackathon 2025. All rights reserved.
 
 ## 📞 Support
 
@@ -401,6 +449,17 @@ For questions or support:
 - Create an issue in the repository
 - Contact the development team
 - Check the documentation
+- Review the code comments
+
+## 🙏 Acknowledgments
+
+- **Land ReGen Hackathon 2025** for the platform and opportunity
+- **Kitui County** for the environmental context and data
+- **Open source community** for the amazing tools and libraries
+- **Supabase** for the backend infrastructure
+- **Google AI** for the powerful AI capabilities
+
+---
 
 **Regenerating Kitui, one tree at a time** 🌳
 
