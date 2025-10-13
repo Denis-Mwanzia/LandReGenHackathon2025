@@ -120,6 +120,10 @@ export const WeatherGuard: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => <RoleGuard permission="canViewWeather">{children}</RoleGuard>;
 
+export const ChatGuard: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => <RoleGuard permission="canViewChat">{children}</RoleGuard>;
+
 export const VerificationGuard: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => <RoleGuard permission="canViewVerification">{children}</RoleGuard>;

@@ -33,18 +33,20 @@ export default function LoginForm({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6 sm:p-8 max-w-md mx-auto">
-      <div className="text-center mb-6">
-        <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-4">
-          <LogIn className="text-white" size={28} />
+    <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-4 sm:p-6 lg:p-8 max-w-md mx-auto">
+      <div className="text-center mb-4 sm:mb-6">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+          <LogIn className="text-white sm:w-7 sm:h-7" size={20} />
         </div>
-        <h2 className="text-2xl font-bold text-slate-800 mb-2">Welcome Back</h2>
-        <p className="text-slate-600 text-sm">
+        <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-2">
+          Welcome Back
+        </h2>
+        <p className="text-slate-600 text-xs sm:text-sm">
           Sign in to your Kitui Reforest AI account
         </p>
       </div>
 
-      <form onSubmit={handleLogin} className="space-y-4">
+      <form onSubmit={handleLogin} className="space-y-3 sm:space-y-4">
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">
             Email Address

@@ -137,7 +137,7 @@ export default function ChatAssistant() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-80 sm:w-96 h-[500px] sm:h-[600px] bg-white rounded-xl shadow-2xl border border-slate-200 flex flex-col">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-80 sm:w-96 h-[500px] sm:h-[600px] bg-white rounded-xl shadow-2xl border border-slate-200 flex flex-col max-h-[80vh] sm:max-h-none">
       {/* Header */}
       <div className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white p-4 rounded-t-xl flex items-center justify-between">
         <div className="flex items-center gap-3">

@@ -140,71 +140,75 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="space-y-8">
-      <div className="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl p-6 text-white">
+    <div className="space-y-4 sm:space-y-6 lg:space-y-8">
+      <div className="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl p-4 sm:p-6 text-white">
         <div className="flex items-center gap-3 mb-3">
           <div className="p-2 bg-white/20 rounded-lg">
-            <BarChart3 size={24} className="text-white" />
+            <BarChart3 size={20} className="text-white sm:w-6 sm:h-6" />
           </div>
-          <h2 className="text-2xl font-bold">Community Progress Dashboard</h2>
+          <h2 className="text-xl sm:text-2xl font-bold">
+            Community Progress Dashboard
+          </h2>
         </div>
-        <p className="text-emerald-100">
+        <p className="text-sm sm:text-base text-emerald-100">
           Track reforestation impact and community engagement across Kitui
           County
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl p-6 text-white">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl p-4 sm:p-6 text-white">
           <div className="flex items-center justify-between mb-2">
-            <MapPin size={24} />
-            <div className="text-3xl font-bold">{stats.totalProjects}</div>
+            <MapPin size={20} className="sm:w-6 sm:h-6" />
+            <div className="text-2xl sm:text-3xl font-bold">
+              {stats.totalProjects}
+            </div>
           </div>
-          <div className="text-emerald-100 text-sm font-medium">
+          <div className="text-emerald-100 text-xs sm:text-sm font-medium">
             Total Projects
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white">
+        <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-4 sm:p-6 text-white">
           <div className="flex items-center justify-between mb-2">
-            <TreePine size={24} />
-            <div className="text-3xl font-bold">
+            <TreePine size={20} className="sm:w-6 sm:h-6" />
+            <div className="text-2xl sm:text-3xl font-bold">
               {stats.totalTreesPlanted.toLocaleString()}
             </div>
           </div>
-          <div className="text-green-100 text-sm font-medium">
+          <div className="text-green-100 text-xs sm:text-sm font-medium">
             Trees Planted
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl p-6 text-white">
+        <div className="bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl p-4 sm:p-6 text-white">
           <div className="flex items-center justify-between mb-2">
-            <Sprout size={24} />
-            <div className="text-3xl font-bold">
+            <Sprout size={20} className="sm:w-6 sm:h-6" />
+            <div className="text-2xl sm:text-3xl font-bold">
               {stats.totalAreaCovered.toFixed(1)}
             </div>
           </div>
-          <div className="text-teal-100 text-sm font-medium">
+          <div className="text-teal-100 text-xs sm:text-sm font-medium">
             Hectares Covered
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white">
+        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 sm:p-6 text-white">
           <div className="flex items-center justify-between mb-2">
-            <TrendingUp size={24} />
-            <div className="text-3xl font-bold">
+            <TrendingUp size={20} className="sm:w-6 sm:h-6" />
+            <div className="text-2xl sm:text-3xl font-bold">
               {stats.averageSurvivalRate.toFixed(1)}%
             </div>
           </div>
-          <div className="text-blue-100 text-sm font-medium">
+          <div className="text-blue-100 text-xs sm:text-sm font-medium">
             Avg Survival Rate
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+          <h3 className="text-base sm:text-lg font-bold text-slate-800 mb-3 sm:mb-4">
             Trees Planted by Species
           </h3>
           <ResponsiveContainer width="100%" height={300}>
