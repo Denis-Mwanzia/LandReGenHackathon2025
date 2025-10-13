@@ -453,6 +453,7 @@ For questions or support:
 
 ## 🙏 Acknowledgments
 
+- **Power Learn Project** for organizing the Land ReGen Hackathon 2025
 - **Land ReGen Hackathon 2025** for the platform and opportunity
 - **Kitui County** for the environmental context and data
 - **Open source community** for the amazing tools and libraries
