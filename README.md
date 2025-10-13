@@ -447,7 +447,7 @@ This project is built for the Land ReGen Hackathon 2025. All rights reserved.
 For questions or support:
 
 - Create an issue in the repository
-- Contact the development team
+- Contact the development team: **<denismwanzia56@gmail.com>**
 - Check the documentation
 - Review the code comments
 
